@@ -11,7 +11,7 @@ const puppeteer = require('puppeteer');
     //consigue una screenshot de la direccion
     //await page.screenshot({ path: 'falabella1.jpg' });
     //ingresamos el id del input y le pasamos la busqueda que queremos.
-    await page.type('#testId-SearchBar-Input','zapatillas');
+    await page.type('#testId-SearchBar-Input','notebook gamer');
     //screenshot de la busqueda
     //await page.screenshot({ path: 'falabella2.jpg' });
     //ahora selecciono el el div que contiene al input o button, tomo su selector e indico donde haga click
@@ -29,12 +29,20 @@ const puppeteer = require('puppeteer');
             links.push(element.href)
         }return links
     });
-
+    const listas=[];
     for(let enlace of enlaces){
         await page.goto(enlace);
+
+        const lista =  await page.evaluate(() =>{
+            const tmp ={};
+            tmp.title = document.querySelector('.product-name').innerText;
+            tmp.price = document.querySelector('.copy12').innerText;
+            return tmp;
+        });
+        listas.push(lista)
     }
    
-
+    console.log(listas);
     await browser.close();
 
 })();
